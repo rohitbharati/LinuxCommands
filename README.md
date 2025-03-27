@@ -837,4 +837,208 @@ This helps in quickly identifying:
 
 ---
 
-This enhanced version makes it easier to read and understand file permissions, types, and ownership in Linux. 🚀
+# System and Network Utilities in Linux
+
+## `uname` - Get System Information
+The `uname` command provides detailed information about the host system.
+
+```bash
+uname -a
+```
+**Example Output:**
+```
+Linux ip-10-0-0-51.eu-central-1.compute.internal 4-265.amzn2.x86_64 #1 SMP Fri Jun 14 09:53:28 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+```
+- Displays system name, kernel version, architecture, and more.
+
+---
+
+## `du` - Disk Usage
+The `du` command is used to check the size of directories and files.
+
+| Option | Description |
+|--------|-------------|
+| `du -m` | Displays disk usage in MB. |
+| `du -h` | Displays disk usage in a human-readable format (KB, MB, GB). |
+
+---
+
+## `whereis` and `which` - Locate Installed Commands
+
+- **`whereis`** – Shows all locations where a command is installed.
+- **`which`** – Displays the exact path of the executable being used.
+
+```bash
+whereis docker
+```
+**Example Output:**
+```
+docker: /usr/bin/docker /etc/docker /usr/libexec/docker /usr/share/man/man1/docker.1.gz
+```
+
+```bash
+which docker
+```
+**Example Output:**
+```
+/bin/docker
+```
+---
+
+## `df` - Disk Space and Mounted Filesystems
+The `df` command reports the available and used disk space.
+
+```bash
+df -h
+```
+**Example Output:**
+```
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        2.0G     0  2.0G   0% /dev
+tmpfs           2.0G     0  2.0G   0% /dev/shm
+tmpfs           2.0G  448K  2.0G   1% /run
+tmpfs           2.0G     0  2.0G   0% /sys/fs/cgroup
+/dev/xvda1       50G   47G  3.2G  94% /
+tmpfs           393M     0  393M   0% /run/user/1000
+```
+- The `-h` flag makes the output human-readable.
+
+---
+
+## Software Management with `yum`
+**YUM (Yellowdog Updater, Modified)** is used to manage software packages on Amazon Linux, RedHat, and CentOS.
+
+### Common YUM Commands
+| Command | Description |
+|---------|-------------|
+| `yum install <package>` | Installs a package. |
+| `yum remove <package>` | Removes an installed package. |
+| `yum update <package>` | Updates a specific package. |
+| `yum list available` | Lists all available packages. |
+| `yum list installed` | Lists all installed packages. |
+| `yum info <package>` | Displays details about a package. |
+
+```bash
+yum info docker
+```
+**Example Output (Installed Packages):**
+```
+Name        : docker
+Arch        : x86_64
+Version     : 25.0.6
+Release     : 1.amzn2.0.2
+Size        : 169 M
+Repo        : installed
+Summary     : Automates deployment of containerized applications
+```
+**Example Output (Available Packages):**
+```
+Name        : docker
+Arch        : x86_64
+Version     : 25.0.8
+Release     : 1.amzn2.0.1
+Size        : 45 M
+Repo        : amzn2extra-docker/2/x86_64
+```
+
+---
+
+# Networking in Linux
+
+## `hostname` - Identify or Change Server Name
+The hostname is the server's network identity.
+
+### Check the current hostname:
+```bash
+cat /etc/hostname
+hostname
+```
+**Example Output:**
+```
+ip-10-51.eu-central-1.compute.internal
+```
+
+### Change hostname:
+- **Permanently:** Modify `/etc/hostname` and reboot.
+- **Temporarily:** 
+  ```bash
+  hostname new-hostname
+  ```
+
+To restart the system after hostname change:
+```bash
+init 6
+```
+
+---
+
+## `ping` - Check Network Connectivity
+The `ping` command tests connectivity to a remote host.
+
+```bash
+ping google.com
+```
+- Helps in troubleshooting network issues.
+
+---
+
+## `wget` - Download Files from the Internet
+The `wget` command is used to download files from the internet.
+
+Example:
+```bash
+wget https://example.com/file.zip
+```
+
+---
+
+## `ifconfig` - View Network Interfaces
+The `ifconfig` command displays network interface details, including private IP addresses.
+
+```bash
+ifconfig
+```
+- If Docker is installed, you may see `docker0` with a `172.*` IP range.
+- `eth0` represents the host's primary network interface.
+
+---
+
+## `netstat` - View Active Connections and Ports
+The `netstat -pluntu` command lists all processes along with their ports.
+
+```bash
+netstat -pluntu
+```
+**Example Output:**
+```
+tcp6       0      0 :::22                   :::*                    LISTEN      3066/sshd
+```
+- This shows that SSH (port 22) is active.
+
+---
+
+## `telnet` - Check if a Port is Open
+The `telnet` command tests whether a port is open.
+
+```bash
+telnet localhost 80
+```
+**Example Output (Port Closed):**
+```
+Trying 127.0.0.1...
+telnet: connect to address 127.0.0.1: Connection refused
+```
+
+```bash
+telnet localhost 22
+```
+**Example Output (Port Open - SSH Running):**
+```
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+SSH-2.0-OpenSSH_7.4
+```
+To exit, press `Ctrl + C`.
+
+---
